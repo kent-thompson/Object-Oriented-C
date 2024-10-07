@@ -4,7 +4,7 @@
 #include "encapsulation.h"
 
 
-//bool printMsgOne() {
+//bool printMsgOne() {  // could use a positional dependant function, but they go undocumented and can be "lost"
 //	printf( "MessageOne\n" );
 //	return true;
 //}
@@ -21,6 +21,7 @@ bool TopLevelTwo() {
 	return true;
 }
 
+// private functions
 bool static printMsgOne() {
 	printf( "MessageOne\n" );
 	return true;
