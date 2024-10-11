@@ -3,7 +3,6 @@
  */
 #include "encapsulation.h"
 
-
 //bool printMsgOne() {  // could use a positional dependant function, but they go undocumented and can be "lost"
 //	printf( "MessageOne\n" );
 //	return true;
