@@ -8,6 +8,11 @@
 //	return true;
 //}
 
+// private functions
+static bool printMsgOne();
+static bool printMsgTwo();
+
+
 bool TopLevelOne() {
 	printf( "IopLevelOne\n" );
 	printMsgOne();
@@ -21,12 +26,14 @@ bool TopLevelTwo() {
 }
 
 // private functions
-bool static printMsgOne() {
+static bool printMsgOne() {
+//bool printMsgOne() {    
 	printf( "MessageOne\n" );
 	return true;
 }
 
-bool static printMsgTwo() {
+static bool printMsgTwo() {
+//bool printMsgTwo() {    
 	printf( "MessageTwo\n" );
 	return true;
 }

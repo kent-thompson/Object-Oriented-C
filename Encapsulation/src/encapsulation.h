@@ -10,7 +10,7 @@ bool TopLevelOne();
 bool TopLevelTwo();
 
 // private functions
-bool static printMsgOne();
-bool static printMsgTwo();
+// static bool printMsgOne();
+// static bool printMsgTwo();
 
 #endif /* ENCAPSULATION_H_ */

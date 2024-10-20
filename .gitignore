@@ -1,5 +1,5 @@
 Debug/
-makefile
+
 .vscode
 
 # Prerequisites
@@ -47,6 +47,7 @@ makefile
 *.su
 *.idb
 *.pdb
+*.depends
 
 # Kernel Module Compile Results
 *.mod*
