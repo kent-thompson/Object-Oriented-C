@@ -8,7 +8,6 @@ DEPS = $(SRCS:.c=.depends)
 
 all: $(TARGET)
 
-
 $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJECTS) -o $(TARGET)
 

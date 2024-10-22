@@ -27,13 +27,11 @@ bool TopLevelTwo() {
 
 // private functions
 static bool printMsgOne() {
-//bool printMsgOne() {    
 	printf( "MessageOne\n" );
 	return true;
 }
 
 static bool printMsgTwo() {
-//bool printMsgTwo() {    
 	printf( "MessageTwo\n" );
 	return true;
 }
