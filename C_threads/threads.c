@@ -16,31 +16,32 @@ int64_t getMillis() {
 
 //------------------------
 int TaskOne( void* thr_id ) {
-  long tid = (long)thr_id;
-  printf( "Hello from thread One #%ld, thread ID - %lu\n", tid, thrd_current() );
+    long tid = (long)thr_id;
+    printf( "Hello from thread One #%ld, thread ID - %lu\n", tid, thrd_current() );
 
-long begin = getMillis();
-sleep( 3 );
-long end = getMillis();
-long elapsed = end - begin;
- printf( "Thread ONE Took %lu Milliseconds to run\n", elapsed );
-  
-  thrd_exit(EXIT_SUCCESS);
+    long begin = getMillis();
+    sleep( 3 );
+    long end = getMillis();
+    long elapsed = end - begin;
+    printf( "Thread ONE Took %lu Milliseconds to run\n", elapsed );
+
+    thrd_exit( thrd_success );
 }
 
 
 //------------------------
 int TaskTwo(void *thr_id) {
-  long tid = (long)thr_id;
-  printf( "Hello from thread Two #%ld, thread ID - %lu\n", tid, thrd_current() );
+    long tid = (long)thr_id;
+    printf( "Hello from thread Two #%ld, thread ID - %lu\n", tid, thrd_current() );
 
-long begin = getMillis();
-sleep( 2 );
-long end = getMillis();
-long elapsed = end - begin;
- printf( "Thread TWO Took %lu Milliseconds to run\n", elapsed );
+    long begin = getMillis();
+    sleep( 2 );
+    long end = getMillis();
+    long elapsed = end - begin;
+    printf( "Thread TWO Took %lu Milliseconds to run\n", elapsed );
 
-  thrd_exit(EXIT_SUCCESS);
+
+    thrd_exit( thrd_success );
 }
 
 int main() {
@@ -52,16 +53,18 @@ int main() {
 
     rc = thrd_create( &threadOne, (thrd_start_t)&TaskOne, (void *)id );
     if (rc == thrd_error) {
-      printf("ERORR; thrd_create() call failed\n");
-      exit(EXIT_FAILURE);
+        printf("ERORR; thrd_create() ONE call failed\n");
+        exit(EXIT_FAILURE);
     }
+    thrd_detach( threadOne );
 
-    id = 2;
+    ++id;
     rc = thrd_create( &threadTwo, (thrd_start_t)&TaskTwo, (void *)id );
     if (rc == thrd_error) {
-      printf("ERORR; thrd_create() call failed\n");
-      exit(EXIT_FAILURE);
+        printf("ERORR; thrd_create() TWO call failed\n");
+        exit(EXIT_FAILURE);
     }
+    thrd_detach( threadTwo );
 
-  thrd_exit(EXIT_SUCCESS);
+    thrd_exit(EXIT_SUCCESS);
 }
