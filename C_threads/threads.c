@@ -5,6 +5,12 @@
 #include <inttypes.h>
 #include <time.h>
 
+/*
+NOTE: Detaching a thread will automatically release resources and "clean up"
+    when the thread function ends. No need to call thrd_exit for each function.
+SEE: https://github.com/kent-thompson/Cplus-plus Threads.cpp for example of using polling,
+    that could be used here as well, for extended usage.
+*/
 
 //------------------------
 int64_t getMillis() {
@@ -25,7 +31,7 @@ int TaskOne( void* thr_id ) {
     long elapsed = end - begin;
     printf( "Thread ONE Took %lu Milliseconds to run\n", elapsed );
 
-    thrd_exit( thrd_success );
+    return thrd_success;
 }
 
 
@@ -40,8 +46,7 @@ int TaskTwo(void *thr_id) {
     long elapsed = end - begin;
     printf( "Thread TWO Took %lu Milliseconds to run\n", elapsed );
 
-
-    thrd_exit( thrd_success );
+    return thrd_success;
 }
 
 int main() {
@@ -65,6 +70,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
     thrd_detach( threadTwo );
+
 
     thrd_exit(EXIT_SUCCESS);
 }
