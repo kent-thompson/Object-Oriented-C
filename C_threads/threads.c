@@ -53,16 +53,16 @@ int TaskOne( void* pthr_data ) {
     printf( "Hello from Task ONE #%i, thread ID - %lu\n", pdata->id, pdata->thrd_id );
 
     long begin = getMillis();
-    sleep( 2 );
+    sleep( 2 );     // Do WORK
     long mid = getMillis();
-     long elapsed = mid - begin;
-    sprintf( pdata->msg, "Thread ONE MID POINT Took %lu Milliseconds to run", elapsed ); //Notice external data now
+     pdata->elapsed = mid - begin;
+    sprintf( pdata->msg, "Thread ONE MID POINT Took %lu Milliseconds to run", pdata->elapsed ); //Notice external data now
     pdata->state = eMilestone;
 
     sleep( 2 );
     long end = getMillis();
-    elapsed = end - begin;
-    printf( "Thread ONE TOTAL Took %lu Milliseconds to run\n", elapsed );
+    pdata->elapsed = end - begin;
+    printf( "Thread ONE TOTAL Took %lu Milliseconds to run\n", pdata->elapsed );
 
     pdata->state = eDone;
     return thrd_success;
@@ -77,13 +77,13 @@ int TaskTwo( void* pthr_data ) {
     printf( "Hello from Task TWO #%i, thread ID - %lu\n", pdata->id, pdata->thrd_id );
 
     long begin = getMillis();
-    sleep( 2 );
+    sleep( 2 );         // Do WORK
     strcpy( pdata->msg, "Some data inside TaskTwo" );
     showMsg( pdata );   // show externally
 
     long end = getMillis();
-    long elapsed = end - begin;
-    printf( "Thread TWO Took %lu Milliseconds to run\n", elapsed );
+    pdata->elapsed = end - begin;
+    printf( "Thread TWO Took %lu Milliseconds to run\n", pdata->elapsed );
 
     pdata->state = eDone;
     return thrd_success;
@@ -122,7 +122,7 @@ int main() {
     }
 
     thrd_detach( threadOne );
-    thrd_detach( threadTwo );       
+    thrd_detach( threadTwo );
 
     printf("Loop Started\n");
     bool running = true;
@@ -170,8 +170,8 @@ int main() {
             running = false;
         }
     }
-    printf( "Data from outside Task ONE ID: %i Thread ID: %lu \n", oneData.id, oneData.thrd_id );
-    printf( "Data from outside Task TWO ID: %i Thread ID: %lu \n", twoData.id, twoData.thrd_id );
+    printf( "Data from outside Task ONE ID: %i Thread ID: %lu Took %lu Milliseconds to run\n", oneData.id, oneData.thrd_id, oneData.elapsed );
+    printf( "Data from outside Task TWO ID: %i Thread ID: %lu Took %lu Milliseconds to run\n", twoData.id, twoData.thrd_id, twoData.elapsed );
     printf( "App Complete\n" );
     thrd_exit(EXIT_SUCCESS);
 }
