@@ -15,7 +15,7 @@ NOTE: Detaching a thread will automatically release resources and "clean up"
 */
 
 
-enum state { Error = -1, eNone, eReady, ePaused, eStarted, eRunning, eMilestone, eDone, eComplete };
+enum state { eError = -1, eNone, eReady, ePaused, eStarted, eRunning, eMilestone, eDone, eComplete };
 
 typedef struct thread_data {
     atomic_ushort id;
@@ -49,6 +49,7 @@ int64_t getMillis() {
 //------------------------
 int TaskOne( void* pthr_data ) {
     ThreadData* pdata = (ThreadData*)pthr_data;
+    pdata->state = eStarted;
     pdata->thrd_id = thrd_current();
     printf( "Hello from Task ONE #%i, thread ID - %lu\n", pdata->id, pdata->thrd_id );
 
@@ -66,13 +67,13 @@ int TaskOne( void* pthr_data ) {
 
     pdata->state = eDone;
     return thrd_success;
-
 }
 
 
 //------------------------
 int TaskTwo( void* pthr_data ) {
-    ThreadData* pdata = (ThreadData*)pthr_data;    
+    ThreadData* pdata = (ThreadData*)pthr_data;
+        pdata->state = eStarted;
     pdata->thrd_id = thrd_current();
     printf( "Hello from Task TWO #%i, thread ID - %lu\n", pdata->id, pdata->thrd_id );
 
@@ -95,19 +96,19 @@ int main() {
     ThreadData oneData;
     oneData.id = 1;
     oneData.thrd_id = 0;
-    oneData.state = eStarted;
+    oneData.state = eReady;
     oneData.elapsed = 0;
 
     ThreadData twoData;
     twoData.id = 2;
     twoData.thrd_id = 0;
-    twoData.state = eStarted;
+    twoData.state = eReady;
     twoData.elapsed = 0;
 
     thrd_t threadOne;
     thrd_t threadTwo;
     int rc;
-    int tcounter = 0;
+    int tcounter = 0;   // thread counter = important
     
     rc = thrd_create( &threadOne, (thrd_start_t)&TaskOne, (void*) &oneData );
     if (rc == thrd_error) {
