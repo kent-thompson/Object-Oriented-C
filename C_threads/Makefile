@@ -2,7 +2,7 @@ CC := gcc
 CFLAGS = -std=c17 -g -Wall -Werror -Wextra -pedantic -fsanitize=address
 LDFLAGS =
 TARGET = cthreads
-SRCS   = threads.c
+SRCS   = cthreads.c
 OBJECTS = $(SRCS:.c=.o)
 DEPS = $(SRCS:.c=.depends)
 
