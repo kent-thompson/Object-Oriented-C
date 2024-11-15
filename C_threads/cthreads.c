@@ -14,7 +14,6 @@ NOTE: Detaching a thread will automatically release resources and "clean up"
     Local Polling is a great way to control and ehnance this technique.
 */
 
-
 enum state { eError = -1, eNone, eReady, ePaused, eStarted, eRunning, eMilestone, eDone, eComplete };
 
 typedef struct thread_data {
