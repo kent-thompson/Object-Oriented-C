@@ -27,13 +27,12 @@ typedef struct thread_data {
 mtx_t mutex;            // locking
 
 //------------------------
-int64_t getMillis() {
-    mtx_lock( &mutex );    
+void getMillis( int64_t* ms ) {     // locked / guarded function for non-atomic type
+    mtx_lock( &mutex );
     struct timespec now;
     timespec_get( &now, TIME_UTC );
-    int64_t cms = ((int64_t) now.tv_sec) * 1000 + ((int64_t) now.tv_nsec) / 1000000;
+    *ms = ((int64_t) now.tv_sec) * 1000 + ((int64_t) now.tv_nsec) / 1000000;
     mtx_unlock( &mutex );
-    return cms;
 }
 
 
@@ -52,15 +51,19 @@ int TaskOne( void* pthr_data ) {
     pdata->thrd_id = thrd_current();
     printf( "Hello from Task ONE #%i, thread ID - %lu\n", pdata->id, pdata->thrd_id );
 
-    long begin = getMillis();
+    //long begin = getMillis();
+    int64_t begin;
+    getMillis( &begin );
     sleep( 2 );     // Do WORK
-    long mid = getMillis();
+    int64_t mid;
+    getMillis( &mid );
      pdata->elapsed = mid - begin;
     sprintf( pdata->msg, "Thread ONE MID POINT Took %lu Milliseconds to run", pdata->elapsed ); //Notice external data now
     pdata->state = eMilestone;
 
     sleep( 2 );
-    long end = getMillis();
+    int64_t end;
+    getMillis( &end );
     pdata->elapsed = end - begin;
     printf( "Thread ONE TOTAL Took %lu Milliseconds to run\n", pdata->elapsed );
 
@@ -76,12 +79,14 @@ int TaskTwo( void* pthr_data ) {
     pdata->thrd_id = thrd_current();
     printf( "Hello from Task TWO #%i, thread ID - %lu\n", pdata->id, pdata->thrd_id );
 
-    long begin = getMillis();
+    int64_t begin;
+    getMillis( &begin );
     sleep( 2 );         // Do WORK
     strcpy( pdata->msg, "Some data inside TaskTwo" );
     showMsg( pdata );   // show externally
 
-    long end = getMillis();
+    int64_t end;
+    getMillis( &end );
     pdata->elapsed = end - begin;
     printf( "Thread TWO Took %lu Milliseconds to run\n", pdata->elapsed );
 
